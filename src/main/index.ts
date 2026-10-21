@@ -280,6 +280,8 @@ const handlers: Api = {
     }
   },
   async copyIntoProject(projectPath, source, folder) {
+    // A plain sub-folder name only, so the copy can't land outside the project.
+    if (!/^[\w-]+$/.test(folder) || !projectPath.endsWith('.studioclone')) throw new Error('Invalid project folder')
     const dir = join(projectPath, folder)
     mkdirSync(dir, { recursive: true })
     const target = join(dir, `${Date.now()}-${basename(source)}`)
@@ -373,8 +375,17 @@ async function importVideoAsProject() {
   return reserved.path
 }
 
+/** Only the app's own pages may call the main-process API (it can read and write files). */
+function trustedSender(e: Electron.IpcMainInvokeEvent) {
+  const url = e.senderFrame?.url ?? ''
+  if (url.startsWith('app://renderer/')) return true
+  const devUrl = !app.isPackaged ? process.env['ELECTRON_RENDERER_URL'] : undefined
+  return !!devUrl && url.startsWith(devUrl)
+}
+
 for (const [name, fn] of Object.entries(handlers)) {
   ipcMain.handle(name, (e, ...args) => {
+    if (!trustedSender(e)) throw new Error(`Blocked ${name} from an untrusted page`)
     callerContents = e.sender
     return (fn as (...a: unknown[]) => unknown)(...args)
   })
