@@ -93,7 +93,7 @@
         }
       ],
       "hardenedRuntime": false,
-      "identity": null,
+      "identity": "-",
       "extendInfo": {
         "NSCameraUsageDescription": "Take One records your camera for the webcam overlay.",
         "NSMicrophoneUsageDescription": "Take One records your microphone for narration.",

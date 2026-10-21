@@ -78,7 +78,7 @@ Use this copy as a starting point; tighten it if a line wraps badly, but keep th
 8. **FAQ** (native `<details>` elements):
    - Is it free? Yes. MIT licensed, no paid tier, no watermark.
    - Does anything get uploaded? No. Recording, editing, transcription and voices all run on your Mac. Shareable links only go to a server you host yourself.
-   - Why does macOS warn me when I open it? Builds are not notarised yet. Right-click the app and choose Open the first time.
+   - Why does macOS warn me when I open it? Builds are not notarised yet. Open the app once, then go to System Settings → Privacy & Security and click Open Anyway. You only do this once.
    - Windows or Linux? Not yet. It is built on macOS capture APIs.
 9. **Footer**: name, "MIT License", GitHub link, and the line "Not affiliated with Screen Studio."
 

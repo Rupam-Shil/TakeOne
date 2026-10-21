@@ -46,12 +46,21 @@ Take One records your screen together with every click, keystroke and cursor mov
 
 ## Install
 
-Take One is in early development and there's no notarised release yet.
-
-1. Download the latest `.dmg` from [Releases](https://github.com/Rupam-Shil/TakeOne/releases/latest) when one is published, or [build it yourself](#build-from-source).
-2. Drag **Take One** to Applications.
-3. The first time, right-click the app and choose **Open**, because the build isn't notarised.
+1. Download `Take One-<version>-arm64.dmg` from the [latest release](https://github.com/Rupam-Shil/TakeOne/releases/latest), or [build it yourself](#build-from-source).
+2. Open the DMG and drag **Take One** to Applications.
+3. Open Take One. Builds aren't notarised yet, so macOS says it can't verify the developer. Click **Done**, then go to **System Settings → Privacy & Security**, scroll down, click **Open Anyway** next to Take One, and confirm. You only do this once.
 4. Follow the welcome screen to grant Screen Recording (required), plus Accessibility, Input Monitoring, Camera and Microphone if you want click-aware zooms, keystroke overlays and a webcam.
+
+<details>
+<summary>Prefer the terminal?</summary>
+
+Instead of step 3, you can clear the download flag that triggers the warning:
+
+```bash
+xattr -dr com.apple.quarantine "/Applications/Take One.app"
+```
+
+</details>
 
 Requires macOS 15 or later on Apple Silicon. On-device transcription with Apple's speech engine needs macOS 26; Whisper transcription works on macOS 15.
 
