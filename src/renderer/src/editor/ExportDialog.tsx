@@ -75,6 +75,15 @@ export function ExportDialog({ onClose, initialTarget, autoStart }: { onClose: (
     const slices = config.timeline.slices
     return slices.reduce((t, s) => t + (s.end - s.start) / s.speed, 0) / 1000
   }, [config.timeline.slices])
+  // Every hook stays above the early return below; settings load asynchronously, so the first render returns early.
+  const autoStarted = useRef(false)
+  const startRef = useRef<() => Promise<void>>(async () => {})
+  useEffect(() => {
+    if (autoStart && settings && !autoStarted.current && !progress) {
+      autoStarted.current = true
+      void startRef.current()
+    }
+  })
   if (!settings || !e) return null
 
   const codecSetting: AppSettings['export']['codec'] = target === 'link' ? 'h264' : e.codec
@@ -156,13 +165,7 @@ export function ExportDialog({ onClose, initialTarget, autoStart }: { onClose: (
     }
   }
 
-  const autoStarted = useRef(false)
-  useEffect(() => {
-    if (autoStart && settings && !autoStarted.current && !progress) {
-      autoStarted.current = true
-      void start()
-    }
-  })
+  startRef.current = start
 
   const saveFrame = async () => {
     const out = await api.showSaveDialog({ defaultPath: `${settings.general.exportDir}/${safeName(project.file.name)}.png`, filters: [{ name: 'PNG', extensions: ['png'] }] })
