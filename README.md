@@ -46,7 +46,7 @@ Take One records your screen together with every click, keystroke and cursor mov
 
 ## Install
 
-1. Download `Take One-<version>-arm64.dmg` from the [latest release](https://github.com/Rupam-Shil/TakeOne/releases/latest), or [build it yourself](#build-from-source).
+1. Download the `.dmg` file from the [latest release](https://github.com/Rupam-Shil/TakeOne/releases/latest), or [build it yourself](#build-from-source).
 2. Open the DMG and drag **Take One** to Applications.
 3. Open Take One. Builds aren't notarised yet, so macOS says it can't verify the developer. Click **Done**, then go to **System Settings → Privacy & Security**, scroll down, click **Open Anyway** next to Take One, and confirm. You only do this once.
 4. Follow the welcome screen to grant Screen Recording (required), plus Accessibility, Input Monitoring, Camera and Microphone if you want click-aware zooms, keystroke overlays and a webcam.
