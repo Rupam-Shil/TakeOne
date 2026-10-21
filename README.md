@@ -19,6 +19,7 @@
 </p>
 
 <p align="center">
+  <a href="https://takeonemac.vercel.app"><strong>Website</strong></a> ·
   <a href="#install">Install</a> ·
   <a href="#features">Features</a> ·
   <a href="#build-from-source">Build from source</a> ·
