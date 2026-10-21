@@ -1,15 +1,15 @@
 # Landing page handover
 
-Build a single-page marketing site for **Studio Clone**, an open-source macOS screen recorder, inside this `website/` folder. Do not change anything outside `website/`.
+Build a single-page marketing site for **Take One**, an open-source macOS screen recorder, inside this `website/` folder. Do not change anything outside `website/`.
 
-The product name is not final. Put it in one constant (for example `site.config.ts` → `name`) and use that everywhere, including the page title and meta tags, so a rename is a one-line change.
+The product is called **Take One**. Put the name in one constant (for example `site.config.ts` → `name`) and use that everywhere, including the page title and meta tags, so any future rename is a one-line change.
 
 ## What the product is
 
-Studio Clone records your Mac's screen and turns the raw take into a polished demo automatically. Zooms follow your clicks, the cursor is re-rendered smooth and sharp, and the recording sits on a wallpaper with padding, rounded corners and a shadow. It is free, MIT licensed, runs entirely on-device, and needs no account.
+Take One records your Mac's screen and turns the raw take into a polished demo automatically. Zooms follow your clicks, the cursor is re-rendered smooth and sharp, and the recording sits on a wallpaper with padding, rounded corners and a shadow. It is free, MIT licensed, runs entirely on-device, and needs no account.
 
-- Repository: https://github.com/Rupam-Shil/studio-clone
-- Downloads: https://github.com/Rupam-Shil/studio-clone/releases/latest (no release is published yet; link there anyway)
+- Repository: https://github.com/Rupam-Shil/TakeOne
+- Downloads: https://github.com/Rupam-Shil/TakeOne/releases/latest (no release is published yet; link there anyway)
 - Requirements: macOS 15 or later on Apple Silicon
 - Audience: developers, founders and designers who record product demos, tutorials and bug reports
 
@@ -52,8 +52,8 @@ Use this copy as a starting point; tighten it if a line wraps badly, but keep th
 1. **Nav** (sticky; transparent over grey, white with a hairline when scrolled): icon + name on the left; on the right "Features", "Open source", a GitHub link with an icon, and a small black "Download" pill.
 2. **Hero**
    - Eyebrow: "Open source · macOS" with a small red dot.
-   - Headline: "Screen recordings that look edited."
-   - Subhead: "Record your Mac. Studio Clone zooms in where you click, smooths your cursor and frames it all on a beautiful background. Free, private and open source."
+   - Headline: "Screen recordings that look edited, on the first take."
+   - Subhead: "Record your Mac. Take One zooms in where you click, smooths your cursor and frames it all on a beautiful background. Free, private and open source."
    - Buttons: "Download for Mac" (primary, releases link) and "View on GitHub" (secondary, repo link).
    - Small note under the buttons: "macOS 15+ · Apple Silicon · MIT licensed".
 3. **Hero video**, directly under the hero text, full content width, inside a white card with 24px radius and the soft shadow. `<video autoplay muted loop playsinline preload="metadata" poster="assets/northwind-tour-poster.jpg">`. Add a small pause/play toggle in a corner for accessibility. Do not autoplay under reduced motion; show the poster with a play button instead.
@@ -70,8 +70,8 @@ Use this copy as a starting point; tighten it if a line wraps badly, but keep th
 6. **Editor showcase**: `editor-cursor-styles.jpg` in a large white card with the caption "Every setting is live. Change the background, cursor or zoom and the preview updates as it plays."
 7. **Open source**: short paragraph ("MIT licensed and built in the open. Read the code, file an issue or send a pull request."), a GitHub button, and a copyable code block:
    ```
-   git clone https://github.com/Rupam-Shil/studio-clone.git
-   cd studio-clone
+   git clone https://github.com/Rupam-Shil/TakeOne.git
+   cd TakeOne
    npm install
    npm run dev
    ```
@@ -88,7 +88,7 @@ Use this copy as a starting point; tighten it if a line wraps badly, but keep th
 - Responsive at 375, 768, 1024, 1280 and 1440px wide with no horizontal scroll. On mobile, stack columns and keep the video full width.
 - Semantic HTML, one `h1`, visible keyboard focus, AA contrast, `alt` text on images, `aria-label` on icon-only links.
 - Performance: Lighthouse 95+ for performance, accessibility, best practices and SEO on desktop. Lazy-load the editor screenshot, serve it as AVIF/WebP with the JPEG as fallback, and add `width`/`height` to avoid layout shift.
-- Meta: title "Studio Clone — screen recordings that look edited", a description, Open Graph and Twitter tags using the poster as the image, and the favicons above.
+- Meta: title "Take One — screen recordings that look edited", a description, Open Graph and Twitter tags using the poster as the image, and the favicons above.
 - No analytics, cookies, trackers or third-party embeds.
 
 ## Do not

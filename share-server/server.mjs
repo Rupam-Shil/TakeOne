@@ -1,4 +1,4 @@
-// Self-hosted shareable links for Studio Clone exports. No dependencies; Node 22+.
+// Self-hosted shareable links for Take One exports. No dependencies; Node 22+.
 //
 //   SHARE_TOKEN=secret PORT=8787 PUBLIC_URL=https://share.example.com node share-server/server.mjs
 //
@@ -200,7 +200,7 @@ createServer(async (req, res) => {
       return authorized(req) ? send(res, 200, dashboard()) : send(res, 200, loginPage(false))
     }
 
-    if (url.pathname === '/') return send(res, 200, '<p>Studio Clone share server is running.</p>')
+    if (url.pathname === '/') return send(res, 200, '<p>Take One share server is running.</p>')
     send(res, 404, '<h1>Not found</h1>')
   } catch (err) {
     console.error(err)

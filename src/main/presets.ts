@@ -39,11 +39,11 @@ export function deletePreset(id: string) {
   return listPresets()
 }
 
-/** Presets travel as `<name>.studiopreset` folders holding preset.json, mirroring project packages. */
+/** Presets travel as `<name>.takeonepreset` folders holding preset.json, mirroring project packages. */
 export async function exportPreset(preset: Preset) {
   const r = await dialog.showSaveDialog({
-    defaultPath: `${preset.name}.studiopreset`,
-    filters: [{ name: 'Studio Preset', extensions: ['studiopreset'] }],
+    defaultPath: `${preset.name}.takeonepreset`,
+    filters: [{ name: 'Take One Preset', extensions: ['takeonepreset'] }],
   })
   if (r.canceled || !r.filePath) return null
   mkdirSync(r.filePath, { recursive: true })
@@ -54,7 +54,8 @@ export async function exportPreset(preset: Preset) {
 export async function importPreset() {
   const r = await dialog.showOpenDialog({
     properties: ['openFile', 'openDirectory'],
-    filters: [{ name: 'Studio Preset', extensions: ['studiopreset', 'json'] }],
+    // .studiopreset is the format from before the rename to Take One.
+    filters: [{ name: 'Take One Preset', extensions: ['takeonepreset', 'studiopreset', 'json'] }],
   })
   for (const p of r.filePaths) {
     try {

@@ -1,16 +1,16 @@
 {
-  "name": "studio-clone",
-  "productName": "Studio Clone",
+  "name": "take-one",
+  "productName": "Take One",
   "version": "1.0.0",
-  "description": "Studio Clone records your screen and turns it into a polished demo: automatic zooms, a smooth cursor, backgrounds, captions, voiceovers and fast exports.",
+  "description": "Take One records your screen and turns it into a polished demo: automatic zooms, a smooth cursor, backgrounds, captions, voiceovers and fast exports.",
   "author": "Rupam Shil",
-  "homepage": "https://github.com/Rupam-Shil/studio-clone",
+  "homepage": "https://github.com/Rupam-Shil/TakeOne",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Rupam-Shil/studio-clone.git"
+    "url": "https://github.com/Rupam-Shil/TakeOne.git"
   },
   "bugs": {
-    "url": "https://github.com/Rupam-Shil/studio-clone/issues"
+    "url": "https://github.com/Rupam-Shil/TakeOne/issues"
   },
   "license": "MIT",
   "main": "./out/main/index.js",
@@ -52,8 +52,8 @@
     "ffmpeg-static": "^5.3.0"
   },
   "build": {
-    "appId": "dev.studioclone.app",
-    "productName": "Studio Clone",
+    "appId": "dev.takeone.app",
+    "productName": "Take One",
     "directories": {
       "output": "dist",
       "buildResources": "build"
@@ -95,22 +95,34 @@
       "hardenedRuntime": false,
       "identity": null,
       "extendInfo": {
-        "NSCameraUsageDescription": "Studio Clone records your camera for the webcam overlay.",
-        "NSMicrophoneUsageDescription": "Studio Clone records your microphone for narration.",
-        "NSAudioCaptureUsageDescription": "Studio Clone records system audio.",
-        "NSScreenCaptureUsageDescription": "Studio Clone records your screen.",
+        "NSCameraUsageDescription": "Take One records your camera for the webcam overlay.",
+        "NSMicrophoneUsageDescription": "Take One records your microphone for narration.",
+        "NSAudioCaptureUsageDescription": "Take One records system audio.",
+        "NSScreenCaptureUsageDescription": "Take One records your screen.",
         "LSUIElement": false
       },
       "fileAssociations": [
         {
+          "ext": "takeone",
+          "name": "Take One Project",
+          "role": "Editor",
+          "isPackage": true
+        },
+        {
           "ext": "studioclone",
-          "name": "Studio Clone Project",
+          "name": "Take One Project (older)",
+          "role": "Editor",
+          "isPackage": true
+        },
+        {
+          "ext": "takeonepreset",
+          "name": "Take One Preset",
           "role": "Editor",
           "isPackage": true
         },
         {
           "ext": "studiopreset",
-          "name": "Studio Clone Preset",
+          "name": "Take One Preset (older)",
           "role": "Editor",
           "isPackage": true
         }

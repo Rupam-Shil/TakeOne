@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  app:
+    name: Typecheck, test and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - name: Build the app bundles
+        run: npx electron-vite build
+
+  helper:
+    name: Build the Swift capture helper
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v4
+      - run: swift --version
+      - run: swift build -c release --package-path native/recorder

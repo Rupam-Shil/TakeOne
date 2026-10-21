@@ -1,0 +1,52 @@
+name: Bug report
+description: Something doesn't work the way it should
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to report this. Please don't attach recordings that contain private information.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open the recording bar and choose Window
+        2. ...
+    validations:
+      required: true
+  - type: dropdown
+    id: source
+    attributes:
+      label: Recording source
+      options:
+        - Display
+        - Window
+        - Area
+        - iPhone or iPad
+        - Not about recording
+  - type: input
+    id: macos
+    attributes:
+      label: macOS version and Mac model
+      placeholder: macOS 26.1, MacBook Air M3
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Take One version or commit
+      placeholder: 1.0.0, or the commit you built from
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Screenshots, recordings or logs
+      description: If you run from source, include any errors printed in the terminal by `npm run dev`.

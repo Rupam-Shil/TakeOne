@@ -3,7 +3,7 @@
 # app's name and icon when it asks for Screen Recording, Accessibility and Input Monitoring.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-APP="$ROOT/resources/bin/Studio Clone Helper.app"
+APP="$ROOT/resources/bin/Take One Helper.app"
 swift build -c release --package-path "$ROOT/native/recorder" 2>&1 | grep -vE '^\[[0-9]+/[0-9]+\]' || true
 BIN="$(swift build -c release --package-path "$ROOT/native/recorder" --show-bin-path)/studio-recorder"
 if [ ! -f "$BIN" ]; then echo "native build failed" >&2; exit 1; fi
@@ -18,9 +18,9 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
 <dict>
   <key>CFBundleDevelopmentRegion</key><string>en</string>
   <key>CFBundleExecutable</key><string>studio-recorder</string>
-  <key>CFBundleIdentifier</key><string>dev.studioclone.helper</string>
-  <key>CFBundleName</key><string>Studio Clone Helper</string>
-  <key>CFBundleDisplayName</key><string>Studio Clone Helper</string>
+  <key>CFBundleIdentifier</key><string>dev.takeone.helper</string>
+  <key>CFBundleName</key><string>Take One Helper</string>
+  <key>CFBundleDisplayName</key><string>Take One Helper</string>
   <key>CFBundlePackageType</key><string>APPL</string>
   <key>CFBundleShortVersionString</key><string>1.0.0</string>
   <key>CFBundleVersion</key><string>1</string>
@@ -28,11 +28,11 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
   <key>LSMinimumSystemVersion</key><string>15.0</string>
   <key>LSUIElement</key><true/>
   <key>NSHighResolutionCapable</key><true/>
-  <key>NSCameraUsageDescription</key><string>Studio Clone records your camera for the camera overlay.</string>
-  <key>NSMicrophoneUsageDescription</key><string>Studio Clone records your microphone for narration.</string>
-  <key>NSAudioCaptureUsageDescription</key><string>Studio Clone records system audio.</string>
-  <key>NSScreenCaptureUsageDescription</key><string>Studio Clone records your screen.</string>
-  <key>NSSpeechRecognitionUsageDescription</key><string>Studio Clone transcribes your narration on this Mac.</string>
+  <key>NSCameraUsageDescription</key><string>Take One records your camera for the camera overlay.</string>
+  <key>NSMicrophoneUsageDescription</key><string>Take One records your microphone for narration.</string>
+  <key>NSAudioCaptureUsageDescription</key><string>Take One records system audio.</string>
+  <key>NSScreenCaptureUsageDescription</key><string>Take One records your screen.</string>
+  <key>NSSpeechRecognitionUsageDescription</key><string>Take One transcribes your narration on this Mac.</string>
 </dict>
 </plist>
 PLIST

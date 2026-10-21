@@ -1,3 +1,4 @@
+import { APP_NAME } from './migrate'
 import { app, BrowserWindow, dialog, globalShortcut, ipcMain, Menu, nativeImage, Notification, shell, Tray } from 'electron'
 import { copyFileSync, existsSync, mkdirSync, openSync, closeSync, readFileSync, realpathSync, rmSync, writeFileSync, writeSync } from 'node:fs'
 import { basename, dirname, extname, join, sep } from 'node:path'
@@ -50,8 +51,6 @@ function writeExports(list: ExportedFile[]) {
     console.warn('exports journal', err)
   }
 }
-
-app.setName('Studio Clone')
 
 const openFiles = new Map<number, number>()
 /** The webContents of the IPC call being handled (read synchronously at the top of a handler). */
@@ -257,7 +256,7 @@ const handlers: Api = {
     const real = realOrNull(path)
     if (!real) throw new Error('File not found')
     const journaled = readExports().some((e) => realOrNull(e.path) === real) && EXPORT_EXTS.has(extname(real).toLowerCase())
-    const project = real.endsWith(projects.PROJECT_EXT) && isInside(real, getSettings().general.projectsDir)
+    const project = projects.isProjectPath(real) && isInside(real, getSettings().general.projectsDir)
     if (!journaled && !project) throw new Error('Only exported files and projects can be opened')
     await shell.openPath(real)
   },
@@ -281,7 +280,7 @@ const handlers: Api = {
   },
   async copyIntoProject(projectPath, source, folder) {
     // A plain sub-folder name only, so the copy can't land outside the project.
-    if (!/^[\w-]+$/.test(folder) || !projectPath.endsWith('.studioclone')) throw new Error('Invalid project folder')
+    if (!/^[\w-]+$/.test(folder) || !projects.isProjectPath(projectPath)) throw new Error('Invalid project folder')
     const dir = join(projectPath, folder)
     mkdirSync(dir, { recursive: true })
     const target = join(dir, `${Date.now()}-${basename(source)}`)
@@ -307,7 +306,7 @@ const handlers: Api = {
     openFiles.delete(handle)
   },
   async tempPath(name) {
-    const dir = join(tmpdir(), 'studio-clone')
+    const dir = join(tmpdir(), 'take-one')
     mkdirSync(dir, { recursive: true })
     return join(dir, `${Date.now()}-${name}`)
   },
@@ -406,7 +405,7 @@ function trayIcon(recording: boolean) {
 
 function setupTray() {
   tray = new Tray(trayIcon(false))
-  tray.setToolTip('Studio Clone')
+  tray.setToolTip(APP_NAME)
   const idleMenu = () =>
     Menu.buildFromTemplate([
       { label: 'New Recording…', accelerator: getSettings().shortcuts.startStopRecording, click: () => openToolbar() },
@@ -417,7 +416,7 @@ function setupTray() {
       { label: 'Projects', click: () => openHome() },
       { label: 'Settings…', click: () => openSettings() },
       { type: 'separator' },
-      { label: 'Quit Studio Clone', role: 'quit' },
+      { label: `Quit ${APP_NAME}`, role: 'quit' },
     ])
   const recordingMenu = (paused: boolean) =>
     Menu.buildFromTemplate([
@@ -588,7 +587,7 @@ app.whenReady().then(async () => {
     new Notification({ title: 'Recovered an unfinished recording', body: 'It was saved to your projects so nothing is lost.' }).show()
   })
 
-  const openArg = process.argv.find((a) => a.endsWith(projects.PROJECT_EXT)) ?? process.env.STUDIO_OPEN_PROJECT
+  const openArg = process.argv.find((a) => projects.isProjectPath(a)) ?? process.env.STUDIO_OPEN_PROJECT
   if (openArg && existsSync(openArg)) openEditor(openArg)
   else if (!getSettings().general.onboarded) openWelcome()
   else openHome()
@@ -606,5 +605,5 @@ app.on('will-quit', () => globalShortcut.unregisterAll())
 
 app.on('open-file', (e, path) => {
   e.preventDefault()
-  if (path.endsWith(projects.PROJECT_EXT)) app.whenReady().then(() => openEditor(path))
+  if (projects.isProjectPath(path)) app.whenReady().then(() => openEditor(path))
 })

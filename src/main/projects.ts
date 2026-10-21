@@ -3,13 +3,14 @@ import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 import { ffmpegPath } from './system'
 import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, renameSync, statSync, writeFileSync } from 'node:fs'
-import { basename, dirname, join } from 'node:path'
+import { dirname, join } from 'node:path'
+import { PROJECT_EXT, isProjectPath, projectName } from '@shared/project-path'
 import { randomUUID } from 'node:crypto'
 import { getSettings } from './store'
 import type { ProjectFile, ProjectSummary } from '@shared/project-file'
 import type { RecordingMeta } from '@shared/recording'
 
-export const PROJECT_EXT = '.studioclone'
+export { PROJECT_EXT, isProjectPath, projectName }
 const execFileAsync = promisify(execFile)
 
 export function projectsDir() {
@@ -35,7 +36,7 @@ export function reserveProject() {
   const name = timestampName()
   const path = uniquePath(projectsDir(), name)
   mkdirSync(join(path, 'recording'), { recursive: true })
-  return { path, name: basename(path, PROJECT_EXT), recordingDir: join(path, 'recording') }
+  return { path, name: projectName(path), recordingDir: join(path, 'recording') }
 }
 
 export function finalizeProject(path: string, name: string) {
@@ -71,7 +72,7 @@ export function listProjects(): ProjectSummary[] {
   const dir = projectsDir()
   const out: ProjectSummary[] = []
   for (const entry of readdirSync(dir)) {
-    if (!entry.endsWith(PROJECT_EXT)) continue
+    if (!isProjectPath(entry)) continue
     const path = join(dir, entry)
     try {
       const file = readProject(path)
@@ -104,7 +105,7 @@ export function renameProject(path: string, name: string) {
   const target = uniquePath(dirname(path), clean)
   renameSync(path, target)
   const file = readProject(target)
-  file.name = basename(target, PROJECT_EXT)
+  file.name = projectName(target)
   writeProject(target, file)
   return target
 }
@@ -115,7 +116,7 @@ export function duplicateProject(path: string) {
   cpSync(path, target, { recursive: true })
   const copy = readProject(target)
   copy.id = randomUUID()
-  copy.name = basename(target, PROJECT_EXT)
+  copy.name = projectName(target)
   copy.createdAt = new Date().toISOString()
   writeProject(target, copy)
   return target
@@ -133,7 +134,7 @@ export async function recoverUnfinished(activeRecordingDir?: string): Promise<st
   const recovered: string[] = []
   const dir = projectsDir()
   for (const entry of readdirSync(dir)) {
-    if (!entry.endsWith(PROJECT_EXT)) continue
+    if (!isProjectPath(entry)) continue
     const path = join(dir, entry)
     const rec = join(path, 'recording')
     if (existsSync(join(path, 'project.json')) || rec === activeRecordingDir) continue
@@ -153,7 +154,7 @@ export async function recoverUnfinished(activeRecordingDir?: string): Promise<st
         /* keep the original; partial data is better than none */
       }
     }
-    finalizeProject(path, `${basename(path, PROJECT_EXT)} (recovered)`)
+    finalizeProject(path, `${projectName(path)} (recovered)`)
     recovered.push(path)
   }
   return recovered

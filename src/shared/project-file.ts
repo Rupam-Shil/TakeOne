@@ -1,6 +1,6 @@
 import type { ProjectConfig } from './project'
 
-/** <name>.studioclone/project.json */
+/** <name>.takeone/project.json (older projects: <name>.studioclone) */
 export interface ProjectFile {
   version: 1
   id: string

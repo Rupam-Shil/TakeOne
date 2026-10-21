@@ -11,7 +11,7 @@ const listeners = new Set<(s: AppSettings) => void>()
 export function getSettings(): AppSettings {
   if (cache) return cache
   const defaults = defaultSettings({
-    projectsDir: join(app.getPath('videos'), 'Studio Clone'),
+    projectsDir: join(app.getPath('videos'), 'Take One'),
     exportDir: app.getPath('downloads'),
   })
   try {

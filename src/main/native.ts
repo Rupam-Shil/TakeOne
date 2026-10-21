@@ -4,7 +4,7 @@ import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 import type { CaptureSources, PermissionStatus, Rect } from '@shared/recording'
 
-const HELPER = join('Studio Clone Helper.app', 'Contents', 'MacOS', 'studio-recorder')
+const HELPER = join('Take One Helper.app', 'Contents', 'MacOS', 'studio-recorder')
 
 export function helperPath(): string {
   const candidates = [
