@@ -1,0 +1,444 @@
+@import 'tailwindcss';
+
+/*
+  Monochrome studio.
+  Two schemes, one language: soft opaque surfaces, pills, a near-black (or, in the dark editor,
+  white) pill for whatever is selected, grey for what's secondary. The only colour is the tally red
+  that marks recording. Library, welcome and settings are light; the editor is dark.
+*/
+@theme {
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', 'Helvetica Neue', sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Helvetica Neue', sans-serif;
+  --font-serif: 'New York', ui-serif, Georgia, serif;
+
+  /* Dark scheme (editor) */
+  --color-base: #121214;
+  --color-panel: #19191c;
+  --color-raised: #232327;
+  --color-control: #2a2a2f;
+  --color-hover: #343439;
+  --color-line: #303036;
+  --color-line-soft: #232328;
+  --color-fg: #f4f4f5;
+  --color-on-fg: #111113;
+  --color-muted: #9b9ba3;
+  --color-faint: #67676e;
+
+  /* The selected/primary tone is simply the foreground. */
+  --color-signal: #f4f4f5;
+  --color-signal-deep: #d9d9dd;
+
+  /* Tally light: only for recording state. */
+  --color-tally: #ff3b30;
+  --color-tally-deep: #d92b21;
+
+  /* Timeline tracks are the one place with colour: each kind of edit has its own. */
+  --color-clip: #d2d2d7;
+  --color-zoom: #f5a524;
+  --color-speed: #a3e635;
+  --color-caption: #38bdf8;
+  --color-layout: #ff5c8a;
+  --color-mask: #2dd4bf;
+  --color-voice: #fb923c;
+  --color-keys: #34d399;
+
+  --radius-control: 12px;
+  --radius-panel: 20px;
+  --radius-pill: 999px;
+
+  --seg-track: #0f0f11;
+  --seg-pill: #2c2c31;
+  --seg-pill-fg: #ffffff;
+}
+
+/* Light scheme: library, welcome, settings, pickers. */
+.scheme-light {
+  color-scheme: light;
+  --color-base: #e9e9eb;
+  --color-panel: #f3f3f5;
+  --color-raised: #ffffff;
+  --color-control: #ececee;
+  --color-hover: #e1e1e4;
+  --color-line: #d4d4d9;
+  --color-line-soft: #e2e2e6;
+  --color-fg: #141416;
+  --color-on-fg: #ffffff;
+  --color-muted: #78787f;
+  --color-faint: #a7a7ad;
+  --color-signal: #141416;
+  --color-signal-deep: #2a2a2e;
+  --seg-track: #ffffff;
+  --seg-pill: #1a1a1d;
+  --seg-pill-fg: #ffffff;
+  color: var(--color-fg);
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.45;
+    font-weight: 500;
+    color: var(--color-fg);
+    background: transparent;
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+    -webkit-user-select: none;
+    overflow: hidden;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+  input,
+  textarea,
+  [contenteditable='true'] {
+    user-select: text;
+    -webkit-user-select: text;
+    font-weight: 500;
+  }
+  button {
+    cursor: default;
+    font-weight: 600;
+  }
+  :focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--color-fg) 70%, transparent);
+    outline-offset: 2px;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--color-fg) 16%, transparent);
+    border-radius: 10px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility drag {
+  -webkit-app-region: drag;
+}
+@utility no-drag {
+  -webkit-app-region: no-drag;
+}
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.app-surface {
+  background: var(--color-base);
+}
+
+/* Soft raised card (white in the light scheme, charcoal in the dark one). */
+.card {
+  background: var(--color-raised);
+  border-radius: var(--radius-panel);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 10%, transparent),
+    0 12px 32px -18px rgba(0, 0, 0, 0.6),
+    0 1px 2px rgba(0, 0, 0, 0.3);
+}
+.scheme-light .card {
+  box-shadow:
+    inset 0 1px 0 #ffffff,
+    0 14px 34px -18px rgba(0, 0, 0, 0.3),
+    0 1px 2px rgba(0, 0, 0, 0.06);
+}
+/* Older surfaces still reference these names; they are plain raised panels now. */
+.glass,
+.glass-float {
+  background: var(--color-raised);
+  border: 1px solid var(--color-line-soft);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 10%, transparent),
+    0 18px 40px -20px rgba(0, 0, 0, 0.6);
+}
+.scheme-light .glass,
+.scheme-light .glass-float {
+  border-color: transparent;
+  box-shadow:
+    inset 0 1px 0 #ffffff,
+    0 14px 34px -18px rgba(0, 0, 0, 0.28),
+    0 1px 2px rgba(0, 0, 0, 0.06);
+}
+.hairline-top {
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 8%, transparent);
+}
+
+/* Floating recording controls: white pills with a drop, a near-black pill for the selected tab. */
+.soft-pill {
+  background: linear-gradient(180deg, #ffffff, #f2f2f4);
+  color: #141416;
+  box-shadow:
+    inset 0 1px 0 #ffffff,
+    0 14px 34px -12px rgba(0, 0, 0, 0.45),
+    0 2px 6px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+.soft-pill-dark {
+  background: linear-gradient(180deg, #3a3b40, #141417);
+  color: #ffffff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 10px 24px -10px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(0, 0, 0, 0.5);
+}
+.soft-btn {
+  background: linear-gradient(180deg, #ffffff, #efeff2);
+  color: #1a1a1c;
+  box-shadow:
+    inset 0 1px 0 #ffffff,
+    0 8px 20px -8px rgba(0, 0, 0, 0.45),
+    0 1px 3px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(0, 0, 0, 0.06);
+  transition:
+    transform 120ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 120ms ease;
+}
+.soft-btn:hover {
+  filter: brightness(0.97);
+}
+.soft-btn:active {
+  transform: scale(0.96);
+}
+.soft-tab {
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    transform 120ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.soft-tab:active {
+  transform: scale(0.97);
+}
+
+/* Raised button: a keycap with a dark rim, so it reads on any surface, not only on a black track. */
+.btn-soft {
+  background: linear-gradient(180deg, #313137, #232328);
+  color: var(--color-fg);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 0 0 1px rgba(0, 0, 0, 0.6),
+    0 4px 10px -4px rgba(0, 0, 0, 0.7);
+  transition:
+    filter 120ms ease,
+    transform 120ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.btn-soft:hover {
+  filter: brightness(1.12);
+}
+.btn-soft:active {
+  transform: scale(0.97);
+}
+.scheme-light .btn-soft {
+  background: linear-gradient(180deg, #ffffff, #efeff2);
+  box-shadow:
+    inset 0 1px 0 #ffffff,
+    0 0 0 1px rgba(0, 0, 0, 0.08),
+    0 4px 10px -6px rgba(0, 0, 0, 0.3);
+}
+.scheme-light .btn-soft:hover {
+  filter: brightness(0.97);
+}
+
+/* Segmented control: a track with a sliding pill. */
+.seg-track {
+  background: var(--seg-track);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+.scheme-light .seg-track {
+  box-shadow:
+    inset 0 1px 0 #ffffff,
+    0 6px 16px -10px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+.seg-pill {
+  background: var(--seg-pill);
+  color: var(--seg-pill-fg);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 6px 14px -8px rgba(0, 0, 0, 0.6);
+}
+
+/* Keycap: for shortcuts, after a low-profile keyboard. */
+.keycap {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  color: var(--color-muted);
+  background: var(--color-control);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 12%, transparent),
+    0 2px 0 color-mix(in srgb, black 55%, transparent);
+}
+.scheme-light .keycap {
+  color: #3a3a40;
+  background: linear-gradient(180deg, #ffffff, #ededf0);
+  box-shadow:
+    inset 0 1px 0 #ffffff,
+    0 2px 0 #c8c8cd,
+    0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Timeline chips in tones of grey: --chip is the track tone. */
+.chip {
+  background: color-mix(in srgb, var(--chip) 30%, var(--color-base));
+  border: 1px solid color-mix(in srgb, var(--chip) 60%, transparent);
+  color: color-mix(in srgb, var(--chip) 75%, white);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+.chip-selected {
+  background: var(--color-fg);
+  border-color: var(--color-fg);
+  color: var(--color-on-fg);
+  box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.8);
+}
+
+/* Tool dock button: icon over a short label; the active one is a raised pill. */
+.dock-btn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 62px;
+  height: 54px;
+  border-radius: 14px;
+  color: var(--color-faint);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  transition:
+    color 120ms ease,
+    background-color 120ms ease,
+    box-shadow 120ms ease;
+}
+.dock-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 1.8;
+}
+.dock-btn:hover {
+  color: var(--color-fg);
+  background: color-mix(in srgb, var(--color-fg) 6%, transparent);
+}
+.dock-btn[data-active='true'] {
+  color: var(--color-on-fg);
+  background: var(--color-fg);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 8px 20px -10px rgba(0, 0, 0, 0.8);
+}
+
+/* Range input styled as a slim fader. */
+input[type='range'].fader {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 20px;
+  background: transparent;
+  width: 100%;
+}
+input[type='range'].fader::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 4px;
+  background: linear-gradient(to right, var(--fader-fill, var(--color-fg)) 0 var(--fader-pct, 50%), var(--color-control) var(--fader-pct, 50%) 100%);
+}
+input[type='range'].fader::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  margin-top: -6px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.18),
+    0 2px 6px rgba(0, 0, 0, 0.35);
+  transition: transform 120ms ease;
+}
+input[type='range'].fader:active::-webkit-slider-thumb {
+  transform: scale(1.12);
+}
+
+/* The preview casts light on the surfaces around it. */
+.ambient {
+  position: absolute;
+  left: -18%;
+  top: -18%;
+  width: 136%;
+  height: 136%;
+  filter: blur(70px) saturate(1.3) brightness(1.05);
+  opacity: 0.55;
+  pointer-events: none;
+  border-radius: 40%;
+}
+
+@keyframes tally-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.tally-pulse {
+  animation: tally-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes countdown-pop {
+  0% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+  18% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+}
+.countdown-pop {
+  animation: countdown-pop 1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise-in {
+  animation: rise-in 160ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
